@@ -1,0 +1,10 @@
+.header {
+    background-color: blue;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.toast {
+  margin-top: 70px;
+}

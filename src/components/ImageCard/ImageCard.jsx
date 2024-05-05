@@ -1,9 +1,12 @@
-export default function ImageCard({url, name}) {
+export default function ImageCard({url, name, fullInfo, openModal}) {
 
+    function clickHandler() {
+        openModal(fullInfo)
+    }
 
     return (
         <> 
-            <img src={url} alt={name} />
+            <img onClick={clickHandler} src={url} alt={name} />
         </>
     )
 }
