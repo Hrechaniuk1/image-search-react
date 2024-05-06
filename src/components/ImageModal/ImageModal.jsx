@@ -1,14 +1,14 @@
 
 import css from './ImageModal.module.css'
 
-export default function ImageModal({ info, closeModal, CloseByBtn }) {
+export default function ImageModal({ info}) {
 
     return (
-        <div onKeyDown={CloseByBtn} onClick={closeModal} className={css.modalWindow}>
+        <div>
             <p className={css.helper}>Press the Esc to close or click anywhere</p>
-            <div className={css.imgContainer}>
-                <img className={css.img} src={info.urls.regular} alt={info.alt_description} />
-            </div>
+            {info.description && <p className={css.description}>{info.description}</p>}
+            <img className={css.img} src={info.urls.regular} alt={info.alt_description} />
+            {info.user.username && <p className={css.author}>Author: {info.user.username}</p>}
         </div>
     )
 }

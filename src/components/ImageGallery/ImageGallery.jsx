@@ -1,13 +1,20 @@
-import ImageCard from "../ImageCard/ImageCard";
-import css from './ImageGallery.module.css'
+import { forwardRef } from 'react';
+import ImageCard from '../ImageCard/ImageCard';
+import css from './ImageGallery.module.css';
 
-export default function ImageGallery ({data, openModal}) {
+const ImageGallery = forwardRef(function ImageGalleryComponent({ data, openModal }, ref) {
+   return (<ul ref={ref} className={css.imgList}>
+        {data.map(item => (
+            <li key={item.id} className={css.imgItem}>
+                <ImageCard
+                    url={item.urls.small}
+                    name={item.urls.alt_description}
+                    fullInfo={item}
+                    openModal={openModal}
+                />
+            </li>
+        ))}
+    </ul>)
+});
 
-
-    return (
-        <ul className={css.imgList}>
-    
-                {data.map(item => { return <li className={css.imgItem} key={item.id}><ImageCard url={item.urls.small} name={item.urls.alt_description} fullInfo={item} openModal={openModal} ></ImageCard></li>  })}
-        </ul>
-    )
-} 
+export default ImageGallery;

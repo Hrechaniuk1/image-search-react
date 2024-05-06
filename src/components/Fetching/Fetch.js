@@ -18,7 +18,6 @@ export default async function Fetch(searchWord, page = 1) {
     }
 
     const data = await axios.get(BASE_URL, { params, headers })
-    console.log(data)
     return data.data
     
 
