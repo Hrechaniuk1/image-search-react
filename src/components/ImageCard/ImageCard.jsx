@@ -1,4 +1,5 @@
-export default function ImageCard({url, name, fullInfo, openModal}) {
+
+export default function ImageCard({ url, name, fullInfo, openModal }) {
 
     function clickHandler() {
         openModal(fullInfo)

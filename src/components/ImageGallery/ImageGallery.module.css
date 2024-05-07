@@ -12,3 +12,10 @@
     overflow: hidden;
 }
 
+.imgList li {
+    transition: scale 180ms ease-in-out;
+}
+
+.imgList li:hover {
+    scale: 1.05;
+}
