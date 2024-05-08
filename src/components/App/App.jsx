@@ -1,5 +1,4 @@
-import { useState, useRef } from "react"
-import Modal from 'react-modal';
+import { useState, useRef, useEffect } from "react"
 
 import SearchBar from "../SearchBar/SearchBar"
 import Fetch from "../Fetching/Fetch"
@@ -9,33 +8,6 @@ import Loader from "../Loader/Loader"
 import ImageModal from "../ImageModal/ImageModal"
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-
-const customStyles = {
-    overlay: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.8)'
-    },
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      padding: '0',
-    width: '700px',
-      height: '500px',
-      overflow: 'hidden',
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
-  },
-};
-
-Modal.setAppElement('#root');
 
 export default function App() {
 
@@ -50,41 +22,40 @@ export default function App() {
     // --------------------------------------------
     const imgRef = useRef()
     
-    
-   async function submitHandler(value) {
-       try {
-           setError(false)
-           setLoader(true)
-           setImgs([])
-           const data = await Fetch(value)
-           setKeyWord(value)
-           setLoader(false)
-           setImgs(data.results)
-           setTotalPages(data.total_pages)
-           setPage(page+1)
-           
-       } catch (error) {
-           setError(true)
+    function submitHandler(value) {
+        setKeyWord(value)
+        setPage(1)
+    }
+    function clickHandler() {
+        setPage(page + 1)
+    }
+
+    useEffect(() => {
+        async function onFetch() {
+            if (keyWord) {
+                try {
+                    setError(false)
+                    setLoader(true)
+                    const data = await Fetch(keyWord, page)
+                    setLoader(false)
+                    if (page > 1) {
+                        setImgs(prevImgs => [...prevImgs, ...data.results])
+                         setTimeout(() => {
+                        scroll()
+                         },100)
+                    } else {
+                        setImgs(data.results)
+                    }
+                    setTotalPages(data.total_pages)
+                    } catch (error) {
+                    setError(true)
+                    }
+                } 
         }
-   }
+        onFetch()
+    }, [keyWord, page])
     
-    async function clickHandler() {
-        try {
-            setError(false)
-            setLoader(true)
-            const data = await Fetch(keyWord, page)
-            const results = data.results
-            setLoader(false)
-            setImgs([...imgs, ...results])
-            setPage(page + 1)
-            setTimeout(() => {
-                scroll()
-            },100)
-            
-        } catch (error) {
-            setError(true)
-        } 
-   } 
+    
     function openModal(data) {
         setIsOpen(true);
         setDataModal(data)
@@ -108,15 +79,11 @@ export default function App() {
             <SearchBar
             onFind={submitHandler}
             ></SearchBar>
-            <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={closeModal}
-            style={customStyles}
-            >
-                <ImageModal
+            {modalIsOpen && <ImageModal
                 info={dataModal}
-                ></ImageModal>
-            </Modal>
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+            ></ImageModal>}
             {error && <ErrorMessage></ErrorMessage>}
             
             <ImageGallery

@@ -2,6 +2,8 @@ import { forwardRef } from 'react';
 import ImageCard from '../ImageCard/ImageCard';
 import css from './ImageGallery.module.css';
 
+
+
 const ImageGallery = forwardRef(function ImageGalleryComponent({ data, openModal }, ref) {
    return (<ul ref={ref} className={css.imgList}>
         {data.map(item => (
