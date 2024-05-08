@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react"
 
 import SearchBar from "../SearchBar/SearchBar"
-import Fetch from "../Fetching/Fetch"
+import fetch from "../../Fetching/fetch"
 import ImageGallery from "../ImageGallery/ImageGallery"
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn"
 import Loader from "../Loader/Loader"
@@ -25,6 +25,7 @@ export default function App() {
     function submitHandler(value) {
         setKeyWord(value)
         setPage(1)
+        setImgs([])
     }
     function clickHandler() {
         setPage(page + 1)
@@ -36,16 +37,13 @@ export default function App() {
                 try {
                     setError(false)
                     setLoader(true)
-                    const data = await Fetch(keyWord, page)
+                    const data = await fetch(keyWord, page)
                     setLoader(false)
-                    if (page > 1) {
-                        setImgs(prevImgs => [...prevImgs, ...data.results])
-                         setTimeout(() => {
+                    // лишив перевірку для запуску таймауту
+                    page > 1 && setTimeout(() => {
                         scroll()
                          },100)
-                    } else {
-                        setImgs(data.results)
-                    }
+                    setImgs(prevImgs => [...prevImgs, ...data.results])
                     setTotalPages(data.total_pages)
                     } catch (error) {
                     setError(true)
@@ -67,7 +65,7 @@ export default function App() {
   }
     
     function scroll() {
-    imgRef.current.childNodes[0] && window.scrollBy({
+    imgRef.current?.childNodes?.[0] && window.scrollBy({
                 top: (imgRef.current.childNodes[0].getBoundingClientRect().height * 2),
             left: 0,
                 behavior: "smooth",
