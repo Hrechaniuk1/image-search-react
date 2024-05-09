@@ -35,10 +35,10 @@ export default function App() {
         async function onFetch() {
             if (keyWord) {
                 try {
+                    setLoader(true)
                     const data = await fetch(keyWord, page)
                     setTotalPages(0)
                     setError(false)
-                    setLoader(true)
                     setLoader(false)
                     // лишив перевірку для запуску таймауту
                     page > 1 && setTimeout(() => {
@@ -46,7 +46,8 @@ export default function App() {
                          },100)
                     setImgs(prevImgs => [...prevImgs, ...data.results])
                     setTotalPages(data.total_pages)
-                    } catch (error) {
+                } catch (error) {
+                    setLoader(false)
                     setError(true)
                     }
                 } 
