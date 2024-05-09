@@ -35,9 +35,10 @@ export default function App() {
         async function onFetch() {
             if (keyWord) {
                 try {
+                    const data = await fetch(keyWord, page)
+                    setTotalPages(0)
                     setError(false)
                     setLoader(true)
-                    const data = await fetch(keyWord, page)
                     setLoader(false)
                     // лишив перевірку для запуску таймауту
                     page > 1 && setTimeout(() => {
