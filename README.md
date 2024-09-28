@@ -9,14 +9,14 @@
 ## Запуск проекту
 1. Клонуй репозиторій:
    ```bash
-   git clone https://github.com/Hrechaniuk1/image-search-react-ts
+   git clone https://github.com/Hrechaniuk1/image-search-react
 2. Перейди на сторінку проекту
    ```bash
-   cd image-search-react-ts
-4. Встанови залежості
+   cd image-search-react
+3. Встанови залежості
    ```bash
    npm install
-6. Запусти сервер
+4. Запусти сервер
    ```bash
    npm run dev
 
